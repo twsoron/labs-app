@@ -33,13 +33,21 @@ else:
             text += page.extract_text() or ""
         return text
     
-    question = st.text_area(
-        "Now ask a question about the document!",
-        placeholder="Can you give me a short summary?",
-        disabled=not uploaded_file,
+    question = option = st.radio(
+    "Choose a Summary Option:",
+    ["Summarize the document in 100 words", 
+     "Summarize the document in 2 connecting paragraphs", 
+     "Summarize the document in 5 bullet points"]
     )
-
-    if uploaded_file and question:
+    advanced = st.checkbox("Use advanced Model")
+    
+    if advanced:
+        model = "gpt-4.1"
+    else:
+        model = "gpt-4.1-nano"
+        
+    button = st.button("Generate Response")
+    if uploaded_file and question and button:
 
         if uploaded_file and question:
             file_extension = uploaded_file.name.split('.')[-1]
@@ -59,7 +67,7 @@ else:
 
         # Generate an answer using the OpenAI API.
         stream = client.chat.completions.create(
-            model="gpt-4.1",
+            model= model,
             messages=messages,
             stream=True,
         )
