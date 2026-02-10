@@ -8,8 +8,8 @@ from pathlib import Path
 from PyPDF2 import PdfReader
 
 
-
-chroma_client = chromadb.PersistentClient(path='./ChromaDB_for_Lab')
+DB_PATH = Path("./ChromaDB_for_Lab")
+chroma_client = chromadb.PersistentClient(path=str(DB_PATH))
 collection = chroma_client.get_or_create_collection('Lab4Collection')
 
 if 'openai_client' not in st.session_state:
@@ -25,17 +25,17 @@ def add_to_collection(collection, text, file_name):
 
     collection.add(
         documents=[text],
-        ids=file_name,
+        ids=[file_name],
         embeddings=[embedding]
     )
 
 
 def extract_text_from_pdf(pdf_path):
-        reader = PdfReader(pdf_path)
-        text = ""
-        for page in reader.pages:
-            text += page.extract_text() or ""
-        return text
+    reader = PdfReader(pdf_path)
+    text = ""
+    for page in reader.pages:
+        text += page.extract_text() or ""
+    return text
 
 
 def load_pdfs_to_collection(folder_path: str, collection) -> int:
@@ -48,20 +48,15 @@ def load_pdfs_to_collection(folder_path: str, collection) -> int:
         file_id = pdf_path.name
 
         try:
-            collection.add(
-                documents=[text],
-                ids=[file_id]
-            )
+            add_to_collection(collection, text, file_id)
             loaded += 1
         except Exception:
             pass
 
     return loaded
 
-
 if collection.count() == 0:
-    loaded = load_pdfs_to_collection("./Lab-04-Data/", collection)
-
+    loaded = load_pdfs_to_collection("./Lab-04_Data/", collection)
 
 st.title('Lab 4: Chatbot using RAG')
 
