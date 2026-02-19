@@ -85,7 +85,6 @@ if st.button('Get Outfit and Activity Ideas'):
 
     response_message = response.choices[0].message
     messages.append(response_message.to_dict())
-
     tool_calls = response_message.tool_calls
 
     if tool_calls:
@@ -116,7 +115,7 @@ if st.button('Get Outfit and Activity Ideas'):
             st.write(model_response_with_function_call.choices[0].message.content)
 
         else:
-            st.write(f"Error: function {tool_function_name} does not exist")
+            st.write("Error with tool")
 
     else:
         st.write(response_message.content)
