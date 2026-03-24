@@ -78,16 +78,19 @@ if question_submit and question:
             st.session_state.last_response_id = response.id
 
 if st.session_state.last_response_id is not None:
-    follow_up = st.text_input("Ask a follow-up question:")
+    with st.form("follow_up_question_form"):
+        follow_up = st.text_input("Ask a follow-up question:")
+        follow_up_submit = st.form_submit_button("Submit Follow-up")
 
-    if follow_up:
+    if follow_up_submit and follow_up:
         if structured_summary:
             follow_up_response = client.responses.parse(
                 model = "gpt-4o",
                 input = follow_up,
                 instructions = "Extract the answer into the structured format. Return valid JSON only.",
                 tools = [{"type": "web_search_preview"}],
-                text_format = ResearchSummary
+                text_format = ResearchSummary,
+                previous_response_id = st.session_state.last_response_id
             )
             summary = follow_up_response.output_parsed
 
