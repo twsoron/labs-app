@@ -131,3 +131,6 @@ if prompt := st.chat_input("Ask about a course:"):
     st.session_state.messages.append({"role": "assistant", "content": response})
     st.session_state.messages.append({"role": "assistant", "content": followup})
     st.session_state.messages = st.session_state.messages[-4:]
+
+
+    
