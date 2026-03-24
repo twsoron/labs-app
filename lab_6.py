@@ -81,7 +81,7 @@ if st.session_state.last_response_id is not None:
             follow_up_response = client.responses.parse(
                 model = "gpt-4o",
                 input = follow_up,
-                instructions = "Extract the answer into the structured format.",
+                instructions = "Extract the answer into the structured format. Return valid JSON only.",
                 tools = [{"type": "web_search_preview"}],
                 text_format = ResearchSummary
             )
