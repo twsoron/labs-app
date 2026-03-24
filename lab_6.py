@@ -20,6 +20,7 @@ client = OpenAI(api_key=st.secrets.OPEN_API_KEY)
 
 question = st.text_input("Enter your question:")
 if question:
+    st.session_state.last_response_id = None
     if structured_summary:
         response = client.responses.parse(
             model = "gpt-4o",
