@@ -85,16 +85,13 @@ if st.session_state.last_response_id is not None:
                 tools = [{"type": "web_search_preview"}],
                 text_format = ResearchSummary
             )
-
             summary = follow_up_response.output_parsed
 
             st.write("Follow-up Response:")
             st.write(summary.main_answer)
-
             st.write("Key Facts:")
             for fact in summary.key_facts:
                 st.write("- " + fact)
-
             st.caption(summary.source_hint)
 
         else:
@@ -117,7 +114,6 @@ if st.session_state.last_response_id is not None:
 
                     final_response = stream.get_final_response()
 
-
             else:
                 follow_up_response = client.responses.create(
                     model = "gpt-4o",
@@ -126,5 +122,4 @@ if st.session_state.last_response_id is not None:
                     tools = [{"type": "web_search_preview"}],
                     previous_response_id = st.session_state.last_response_id
                 )
-
                 st.write(follow_up_response.output_text)
