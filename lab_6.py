@@ -18,8 +18,11 @@ structured_summary = st.sidebar.checkbox("Return structured summary")
 use_streaming = st.sidebar.checkbox("Use streaming")
 client = OpenAI(api_key=st.secrets.OPEN_API_KEY)
 
-question = st.text_input("Enter your question:")
-if question:
+with st.form("question_form"):
+    question = st.text_input("Enter your question:")
+    question_submit = st.form_submit_button("Submit Question")
+
+if question_submit and question:
     st.session_state.last_response_id = None
     if structured_summary:
         response = client.responses.parse(
