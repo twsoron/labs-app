@@ -24,7 +24,7 @@ if question:
         response = client.responses.parse(
             model = "gpt-4o",
             input = question,
-            instructions = "Extract the answer into the structured format.",
+            instructions = "Extract the answer into the structured format. Return only valid JSON",
             tools = [{"type": "web_search_preview"}],
             text_format = ResearchSummary
         )
